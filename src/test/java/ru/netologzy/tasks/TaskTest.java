@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TaskTest {
     SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
 
-    String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+    String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
     Epic epic = new Epic(55, subtasks);
 
     Meeting meeting = new Meeting(
@@ -18,6 +18,7 @@ public class TaskTest {
     );
 
     Todos todos = new Todos();
+
     @BeforeEach
     public void setup() {
         todos.add(simpleTask);
@@ -26,13 +27,14 @@ public class TaskTest {
     }
 
     @Test
-    public void TestTrueOrFalse1 () {
+    public void TestTrueOrFalse1() {
         SimpleTask task = new SimpleTask(5, "Позвонить родителям");
 
         Assertions.assertTrue(task.matches("Позвонить родителям"));
         Assertions.assertFalse(task.matches("не звонить"));
 
     }
+
     @Test
     public void TestTrueOrFalse2() {
 
@@ -95,11 +97,12 @@ public class TaskTest {
 
         Assertions.assertArrayEquals(expected, actual);
     }
-     @Test
+
+    @Test
     public void shouldSearchQuery5() {
         Task[] expected = {meeting};
         Task[] actual = todos.search("Приложение");
 
         Assertions.assertArrayEquals(expected, actual);
-     }
+    }
 }
