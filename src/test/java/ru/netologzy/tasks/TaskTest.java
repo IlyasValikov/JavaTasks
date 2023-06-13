@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TaskTest {
-    SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+    SimpleTask simpleTask = new SimpleTask(5, "Позвонить позже родителям");
 
     String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
     Epic epic = new Epic(55, subtasks);
@@ -13,7 +13,7 @@ public class TaskTest {
     Meeting meeting = new Meeting(
             555,
             "Выкатка 3й версии приложения",
-            "Приложение НетоБанка",
+            "Приложение НетоБанка родителям",
             "Во вторник после обеда"
     );
 
@@ -28,9 +28,9 @@ public class TaskTest {
 
     @Test
     public void TestTrueOrFalse1() {
-        SimpleTask task = new SimpleTask(5, "Позвонить родителям");
+        SimpleTask task = new SimpleTask(5, "Позвонить позже родителям");
 
-        Assertions.assertTrue(task.matches("Позвонить родителям"));
+        Assertions.assertTrue(task.matches("Позвонить позже родителям"));
         Assertions.assertFalse(task.matches("не звонить"));
 
     }
@@ -54,13 +54,13 @@ public class TaskTest {
         Meeting meeting = new Meeting(
                 555,
                 "Выкатка 3й версии приложения",
-                "Приложение НетоБанка",
+                "Приложение НетоБанка родителям",
                 "Во вторник после обеда"
         );
 
         Assertions.assertTrue(meeting.matches("Выкатка 3й версии приложения"));
         Assertions.assertFalse(meeting.matches("Выкатка 1й версии приложения"));
-        Assertions.assertTrue(meeting.matches("Приложение НетоБанка"));
+        Assertions.assertTrue(meeting.matches("Приложение НетоБанка родителям"));
         Assertions.assertFalse(meeting.matches("Приложение Банка"));
         Assertions.assertFalse(meeting.matches("Приложения кофейни"));
         Assertions.assertFalse(meeting.matches("Обкатка 3го приложения"));
@@ -69,7 +69,7 @@ public class TaskTest {
     @Test
     public void shouldSearchQuery1() {
         Task[] expected = {simpleTask};
-        Task[] actual = todos.search("Позвонить");
+        Task[] actual = todos.search("Позвонить ");
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -77,7 +77,7 @@ public class TaskTest {
     @Test
     public void shouldSearchQuery2() {
         Task[] expected = {simpleTask};
-        Task[] actual = todos.search("родителям");
+        Task[] actual = todos.search("позже");
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -99,9 +99,25 @@ public class TaskTest {
     }
 
     @Test
-    public void shouldSearchQuery5() {
+    public void shouldSearchOneTaskWithQuery() {
         Task[] expected = {meeting};
         Task[] actual = todos.search("Приложение");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchSomeTasksWithSameQuery() {
+        Task[] expected = {simpleTask, meeting};
+        Task[] actual = todos.search("родителям");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotSearchAnyTasks() {
+        Task[] expected = {};
+        Task[] actual = todos.search("купить машину");
 
         Assertions.assertArrayEquals(expected, actual);
     }
